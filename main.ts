@@ -64,12 +64,14 @@ let endsWith2C = (message2 as string).endsWith('C');
  /// CHAPTER 3 ///
 /////////////////
 
-let log = function(message) {
-    console.log(message);
+let message3 = 'abc';
+
+let log = function(message3: string) {
+    console.log(message3);
 }
 
 // this is called an arrow expression (aka lambda expression just called diffrently)
-let doLog = (message) => {
+let doLog = (message3: string) => {
     console.log(message);
 }
 
@@ -78,23 +80,47 @@ let doLog = (message) => {
 // can be applied to methods as well
 
 class Point{
-    x?: number;
-    y?: number;
 
-    private z?: number; // this will only be acceceble from inside the class 
+    // When we prefix variables with access modifiers in the constructor
+    // we dont have to declare them outside the constructor
+    // ts will automatically create them for us
+    // they are also automatically assigned
+    
+    // Naming convention: variables are prefixed with _ because we are using properties
+    constructor(private _x?: number, private _y?: number) {
 
-    constructor(x?: number, y?: number) {
-        this.x = x;
-        this.y = y;
     }
 
     draw() {
-        console.log('X is: ' + this.x);
+        console.log('X is: ' + this.x + ' Y is: ' + this.y);
     }
 
-    getDistance(another: Point) {
-        console.log('Y is: ' + this.y);
+    // Properties
+    // properties are used to protect variables
+    // they are basically getters and setters
+    // we can add logic to them as well
+    get y() {
+        return this._y !== undefined ? this._y : 0;
     }
+
+    set y(value: number) {
+        if(value < 0) {
+            throw new Error('value cannot be less than 0.');
+        }
+        this._y = value;
+    }
+
+    get x() {
+        return this._x !== undefined ? this._x : 0;
+    }
+
+    set x(value: number) {
+        if(value < 0) {
+            throw new Error('value cannot be less than 0.');
+        }
+        this._x = value;
+    }
+
 }
 
 // When using the class we have to use new aka very similar to constructors
@@ -103,3 +129,12 @@ let point = new Point(1, 2);
 let anotherPoint = new Point();
 point.draw();
 
+// using the properties
+point.x = 10;
+point.y = 20;
+
+
+// We will have anther class but the proper way outside this file
+
+// since Dot is a module we have to import it
+import { Dot } from './dot';
